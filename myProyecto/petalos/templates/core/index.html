@@ -1,0 +1,144 @@
+{% extends "core/base.html" %}
+
+{% block titulo %}
+Menu Principal - Petalos
+{% endblock titulo %}
+
+{% load static %}
+
+{% block contenido %}
+
+<div class="card mb-3">
+    <img src="{% static 'img/indexpetalos.PNG' %}" width="100%" height="100%" class="card-img-top"
+        alt="Responsive image">
+    <div class="card-body">
+        <center>
+            <h5 class="card-title">Regala cariño, regala sentimientos con Florería Pétalos.</h5>
+        </center>
+        <p class="card-text">Somos una florería especializada en el reparto de flores a
+            domicilio en Santiago con más de 10 años de experiencia.
+            Realizamos envíos de todo tipo de flores como rosas, tulipanes,
+            gerberas, lilium, girasoles, flores silvestres y mix florales.
+            Contamos con diseños en floreros, ramos, cajas, canastos en mimbre y
+            brindamos servicio dedecoración de iglesias y eventos.
+        </p>
+
+
+    </div>
+</div>
+
+<div class="dropdown-divider"></div>
+<div class="page-title-inner container align-center text-center flex-row-col medium-flex-wrap">
+    <div class="title-wrapper is-smaller flex-col">
+        <h1 class="entry-title mb-0">
+            PRODUCTOS DESTACADOS </h1>
+    </div>
+    <div class="title-content flex-col">
+    </div>
+</div>
+<div class="dropdown-divider"></div>
+<section>
+    <div class="card-group">
+        <div class="card">
+            <img src="{% static 'img/fotoindex2.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Florero de Rosas y Gypsuphylia</h5>
+                <p class="card-text">$20.000</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Añadir al carrito</a>
+            </div>
+            
+        </div>
+        
+        <div class="card">
+            <img src="{% static 'img/fotoindex1.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Florero de Rosas y Gerberas</h5>
+                <p class="card-text">$33.500</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Añadir al carrito</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'img/fotoindex3.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Ramo de 10 Tulipanes</h5>
+                <p class="card-text">$20.000</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Añadir al carrito</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="{% static 'img/fotoindex4.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Florero de Tulipanes + Chocolate</h5>
+                <p class="card-text">$29.490</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-primary">Añadir al carrito</a>
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+
+<div class="dropdown-divider"></div>
+
+<section>
+    <footer class="container py-5">
+        <div class="row">
+
+            <div class="col-6 col-md">
+                <h5>Información de contacto</h5>
+                <ul class="">
+                    <li><a class="text-muted" href="#">Teléfono: 229827480</a></li>
+                    <li><a class="text-muted" href="#">Celular: +569 77051323</a></li>
+                    <li><a class="text-muted" href="#">contacto@floreriapetalos.cl</a></li>
+
+
+                </ul>
+
+                <h5>COBERTURA Y VALORES DESPACHOS</h5>
+                <ul class="">
+                    <li><a class="text-muted" href="#">Revisa los valores y cobertura AQUÍ</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Cómo Comprar</h5>
+                <ul class="">
+                    <li><a class="text-muted" href="#">1era Opción
+                            Llamar a nuestros teléfonos +569 77051323 o 229827580 para tomar nota de su pedido. Pago vía
+                            transferencia electrónica o depósito a nuestra cuenta.</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Condiciones de compra:</h5>
+                <div></div>
+                <h5>Nuestro horarios de entrega son</h5>
+                <ul class="">
+                    <li><a class="text-muted" href="#">Lunes a Viernes de 9:00-19:00 hrs y Sáb entre las 10:00 y 17:00
+                            hrs.
+                            (Fuera del rango horario, existe un recargo de $5000)
+                            Domingos y festivos horario de entrega es entre las 10:00 y las 14:00 hrs con un costo
+                            adicional
+                            de $5000 (Solo se entregarán pedidos programados y cancelados con al menos con 48 hrs de
+                            anticipación)
+                            Para otro requerimiento contáctanos a nuestros teléfonos o
+                            whatsapp 229827480 / +56977051323</a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+</section>
+
+{% endblock contenido %}

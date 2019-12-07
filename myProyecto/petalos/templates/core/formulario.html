@@ -1,0 +1,75 @@
+{% extends "core/base.html" %}
+{% block titulo %}
+Registro de Flores
+{% endblock titulo %}
+{% load static %}
+{% block contenido %}
+
+
+
+
+<section>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Registro de Flores</h5>
+
+                        <form class="form-signin" id="frmdatos">
+                         {% csrf_token %}
+                            <div class="form-label-group">
+                                <input type="text" id="txtTitulo" class="form-control" name="txtTitulo"
+                                    placeholder="Nombre Producto" required autofocus>
+
+
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="form-label-group">
+                                <input type="number" name="txtPrecio" id="txtPrecio" class="form-control"
+                                    placeholder="Precio" required autofocus>
+
+
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div>
+                                <input type="file" name="flproducto" id="filepro">
+
+                            </div>
+
+                            <div class="dropdown-divider"></div>
+                            <div class="form-label-group">
+                                <input type="text" id="txtdescripcion" class="form-control" placeholder="Descripcion"
+                                    required autofocus>
+
+                            </div>
+
+                            <div class="dropdown-divider"></div>
+
+                            <tr>
+                                <td>Categoria:</td>
+                                <td>
+                                    <select name="cboCategoria">
+                                        {% for c in listacategoria %}
+                                        <option>{{c.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <div class="dropdown-divider"></div>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase btn-sm" type="submit"
+                                onclick="grabar()">Agregar</button>
+                            <button class="btn btn-lg  btn-danger btn-block text-uppercase btn-sm" type="reset"
+                                onclick="limpiar()">Limpiar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="respuesta">{{msg}}</div>
+{% endblock contenido %}
