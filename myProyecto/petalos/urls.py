@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import index,gale,formulario,login,login_acceso,cerrar_sesion,eliminar_flores,agregar_carrito
+from .views import index,gale,formulario,login,login_acceso,cerrar_sesion,eliminar_flores
 
 urlpatterns = [
     path('', index,name='IND'),
@@ -10,6 +10,6 @@ urlpatterns = [
     path('login_acceso/',login_acceso,name='LOGINACCESO'),
     path('cerrar_sesion/',cerrar_sesion,name='CERRARSESION'),
     path('eliminar_flores/<id>/',eliminar_flores,name='ELIMINA'),
-    path('agregar_carrito/<id>/',agregar_carrito,name='AGREGAR')
+   
   
 ]

@@ -19,6 +19,13 @@ def agregar_carrito(request,id):
     request.session["carrito"]=lista
     return render(request,"core/carrito.html",{'listaCarrito':lista})
     
+def carros(request):
+    x=request.session["carritox"]
+    suma=0
+    for item in x:
+        suma=suma+int(item["total"])
+    return render(request,'core/carrito.html',{'x':x,'total':suma})    
+
 def eliminar_flores(request,id):
     flor=Flores.objects.get(name=id)#buscar flor
     msg=''
@@ -63,8 +70,7 @@ def formulario(request):
     categorias=Categoria.objects.all() # select * form Categoria
     if request.POST:
         # recuperar el valor del boton accion
-        accion=request.POST.get("accion")
-        if accion=='grabar':            
+        accion=request.POST.get("accion")           
             titulo=request.POST.get("txtTitulo")
             precio=request.POST.get("txtPrecio")
             descrip=request.POST.get("txtDescripcion")
@@ -75,8 +81,8 @@ def formulario(request):
             flor=Flores(
                 name=titulo,
                 precio=precio,
-                descripcion=descrip,
                 imagen=imagen,
+                descripcion=descrip,
                 categoria=obj_categoria
             )
             flor.save() #graba los datos del modelo
