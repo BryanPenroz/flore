@@ -43,7 +43,7 @@ def login(request):
 
 def cerrar_sesion(request):
     logout(request)
-    return render(request,"core/login.html",{'msg':'Cerro Sesión'})
+    return render(request,"core/login.html",{'msgs':'Cerro Sesión'})
     
 def login_acceso(request):
     if request.POST:
@@ -67,37 +67,29 @@ def gale(request):
 
 @login_required(login_url='/login/')
 def formulario(request):
-    categorias=Categoria.objects.all() # select * form Categoria
+    categorias=Categoria.objects.all()
     if request.POST:
-        # recuperar el valor del boton accion
-        accion=request.POST.get("accion")           
+        accion=request.POST.get("accion")
+        if accion=='grabar':           
             titulo=request.POST.get("txtTitulo")
             precio=request.POST.get("txtPrecio")
-            descrip=request.POST.get("txtDescripcion")
-            catego=request.POST.get("cboCategoria")
             imagen=request.FILES.get("txtImagen")
+            catego=request.POST.get("cboCategoria")
             obj_categoria=Categoria.objects.get(name=catego)
-            #instanciar un objeto (modelo) Pelicula
-            flor=Flores(
+            
+            flor=Flores( 
                 name=titulo,
                 precio=precio,
                 imagen=imagen,
-                descripcion=descrip,
                 categoria=obj_categoria
             )
-            flor.save() #graba los datos del modelo
-            return render(request,'core/formulario.html',{'listacategoria':categorias,'msg':'grabo'})
+            flor.save() 
+            return render(request,'core/formulario.html',{'listacategoria':categorias,'msge':'grabo'})
         if accion=='eliminar':
             titulo=request.POST.get("txtTitulo")#recupera el titulo
             flor=Flores.objects.get(name=titulo)# lo busca entre las peliculas
             flor.delete()#elimina
             return render(request,'core/formulario.html',{'listacategoria':categorias,'msg':'elimino'})
+        return render(request,'core/formulario.html',{'listacategoria':categorias})
+            
     return render(request,'core/formulario.html',{'listacategoria':categorias})
-
-
-
-
-
-
-
-

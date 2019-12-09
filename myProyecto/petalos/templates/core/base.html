@@ -55,7 +55,9 @@
                 </ul>
                 <ul class="nav justify-content-end"
                         <li class="nav-item"> 
+                            {% if user.username %}
                             <b>Bienvenido Cliente : {{ user.username }}</b>
+                            {% endif %}
                         </li>
                 </ul>
 

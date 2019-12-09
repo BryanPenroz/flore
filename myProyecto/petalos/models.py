@@ -12,7 +12,6 @@ class Categoria(models.Model):
 class Flores(models.Model):
     name=models.CharField(max_length=45,primary_key=True)
     precio=models.IntegerField()
-    descripcion=models.TextField()
     imagen=models.ImageField(upload_to='flor',null=True)
     categoria=models.ForeignKey(Categoria,on_delete=models.CASCADE)
 

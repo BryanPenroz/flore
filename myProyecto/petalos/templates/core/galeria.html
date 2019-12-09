@@ -8,78 +8,80 @@ Galeria de Flores- Petalos
 
 {% block contenido %}
 <!-- sector del menu -->
-<section>
-    <div class="card-group">
-        <div class="card">
-            <img src="{% static 'img/fotoindex2.jpg' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Florero de Rosas y Gypsuphylia</h5>
-                <p class="card-text">$20.000</p>
+    <section>
+        <div class="card-group">
+            <div class="card">
+                <img src="{% static 'img/fotoindex2.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Florero de Rosas y Gypsuphylia</h5>
+                    <p class="card-text">$20.000</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                    <a href="#" class="btn btn-danger">Eliminar</a>
+                </div>
             </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                <a href="#" class="btn btn-danger">Eliminar</a>
+
+            <div class="card">
+                <img src="{% static 'img/fotoindex1.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Florero de Rosas y Gerberas</h5>
+                    <p class="card-text">$33.500</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                    <a href="#" class="btn btn-danger">Eliminar</a>
+                </div>
             </div>
+
+            <div class="card">
+                <img src="{% static 'img/fotoindex3.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Ramo de 10 Tulipanes</h5>
+                    <p class="card-text">$20.000</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                    <a href="#" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <img src="{% static 'img/fotoindex4.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Florero de Tulipanes + Chocolate</h5>
+                    <p class="card-text">$29.490</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                    <a href="#" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+
+            {% for f in lista %}  
+                <div class="card">
+                    {% if f.imagen%}
+                    <img src="{{f.imagen.url}}"class="card-img-top" alt="...">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{f.name}}</h5>
+                        <p class="card-text">{{f.precio}}</p>
+                        <p class="card-text">{{f.categoria}}</p>
+
+                    
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'AGREGAR' f.name %}" class="btn btn-primary">Añadir al carrito</a>
+                        <a href="{% url 'ELIMINA' f.name %}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+
+
         </div>
 
-        <div class="card">
-            <img src="{% static 'img/fotoindex1.jpg' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Florero de Rosas y Gerberas</h5>
-                <p class="card-text">$33.500</p>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                <a href="#" class="btn btn-danger">Eliminar</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="{% static 'img/fotoindex3.jpg' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Ramo de 10 Tulipanes</h5>
-                <p class="card-text">$20.000</p>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                <a href="#" class="btn btn-danger">Eliminar</a>
-            </div>
-        </div>
-
-
-        <div class="card">
-            <img src="{% static 'img/fotoindex4.png' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Florero de Tulipanes + Chocolate</h5>
-                <p class="card-text">$29.490</p>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                <a href="#" class="btn btn-danger">Eliminar</a>
-            </div>
-        </div>
-
-        {% for f in lista %}  
-        <div class="card">
-            {% if f.imagen%}
-            <img src="{{f.imagen.url}}"class="card-img-top" alt="...">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{f.name}}</h5>
-                <p class="card-text">{{f.precio}}</p>
-                
-            </div>
-            <div class="card-footer">
-                <a href="{% url 'AGREGAR' f.name %}" class="btn btn-primary">Añadir al carrito</a>
-                <a href="{% url 'ELIMINA' f.name %}" class="btn btn-danger">Eliminar</a>
-            </div>
-        </div>
-        {% endfor %}
-
-
-
-
-    </div>
-
-</section>
+    </section>
 {% endblock contenido %}

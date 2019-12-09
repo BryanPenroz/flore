@@ -1,14 +1,10 @@
 {% extends "core/base.html" %}
 {% block titulo %}
-Registro de Flores
+    Registro de Flores
 {% endblock titulo %}
 {% load static %}
 {% block contenido %}
-
-
-
-
-<section>
+    
 
     <div class="container">
         <div class="row">
@@ -18,7 +14,7 @@ Registro de Flores
                         <h5 class="card-title text-center">Registro de Flores</h5>
 
                         <form class="form-signin" id="frmdatos">
-                         {% csrf_token %}
+                    
                             <div class="form-label-group">
                                 <input type="text" id="txtTitulo" class="form-control" name="txtTitulo"
                                     placeholder="Nombre Producto" required autofocus>
@@ -32,19 +28,12 @@ Registro de Flores
 
 
                             </div>
+
                             <div class="dropdown-divider"></div>
                             <div>
-                                <input type="file" name="txtImagen" accept="image/*" id="filepro">
+                                <input type="file" name="txtImagen" >
 
                             </div>
-
-                            <div class="dropdown-divider"></div>
-                            <div class="form-label-group">
-                                <input type="text" id="txtdescripcion" class="form-control" placeholder="Descripcion"
-                                    required autofocus>
-
-                            </div>
-
                             <div class="dropdown-divider"></div>
 
                             <tr>
@@ -59,17 +48,17 @@ Registro de Flores
                             </tr>
 
                             <div class="dropdown-divider"></div>
-                            <button class="btn btn-lg btn-primary btn-block text-uppercase btn-sm" type="submit"
-                                onclick="grabar()">Agregar</button>
-                            <button class="btn btn-lg  btn-danger btn-block text-uppercase btn-sm" type="reset"
-                                onclick="limpiar()">Limpiar</button>
+                            <input class="btn btn-lg btn-primary btn-block text-uppercase btn-sm" type="submit"
+                                value="grabar" name="accion"></button>
+                            <input class="btn btn-lg  btn-danger btn-block text-uppercase btn-sm" type="reset"
+                                value="eliminar" name="accion"></button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+   
 
-<div id="respuesta">{{msg}}</div>
+    <div id="respuesta">{{msg}}</div>
 {% endblock contenido %}
