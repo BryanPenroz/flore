@@ -13,8 +13,8 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Registro de Flores</h5>
 
-                        <form class="form-signin" id="frmdatos">
-                    
+                        <form class="form-signin" id="frmdatos" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div class="form-label-group">
                                 <input type="text" id="txtTitulo" class="form-control" name="txtTitulo"
                                     placeholder="Nombre Producto" required autofocus>
@@ -31,7 +31,7 @@
 
                             <div class="dropdown-divider"></div>
                             <div>
-                                <input type="file" name="txtImagen" >
+                                <input type="file" name="txtImagen" id="txtImagen" >
 
                             </div>
                             <div class="dropdown-divider"></div>

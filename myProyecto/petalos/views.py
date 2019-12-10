@@ -84,12 +84,11 @@ def formulario(request):
                 categoria=obj_categoria
             )
             flor.save() 
-            return render(request,'core/formulario.html',{'listacategoria':categorias,'msge':'grabo'})
+            return render(request,'core/formulario.html',{'listacategoria':categorias,'msg':'grabo'})
         if accion=='eliminar':
             titulo=request.POST.get("txtTitulo")#recupera el titulo
             flor=Flores.objects.get(name=titulo)# lo busca entre las peliculas
             flor.delete()#elimina
             return render(request,'core/formulario.html',{'listacategoria':categorias,'msg':'elimino'})
         return render(request,'core/formulario.html',{'listacategoria':categorias})
-            
     return render(request,'core/formulario.html',{'listacategoria':categorias})
