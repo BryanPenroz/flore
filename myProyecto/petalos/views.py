@@ -3,12 +3,46 @@ from .models import Categoria,Flores
 from django.contrib.auth.decorators import login_required
 #debemos incluir el modelo de users del sistema
 from django.contrib.auth.models import User
+from .forms import CustomUserForm
 #incluimos el sistema de autentificacion de Django, 
 #le di un alias a 'login'
 from django.contrib.auth import authenticate,logout, login as auth_login
 # Create your views here.
 
 #create views
+def registro_usuario(request):
+    data={
+        'form':CustomUserForm()
+    }
+    if request.method=='POST':
+        formulario=CustomUserForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            usuario=formulario.cleaned_data['username']
+            password=formulario.cleaned_data['password1']
+            user=authenticate(username=usuario,password=password)
+            login(request,user)
+            return redirect(to='Home')
+    return render (request,'registration/registro.html',data)        
+
+def login_iniciar(request):
+    if request.POST:
+        usuario=request.POST.get("txtUser")
+        password=request.POST.get("txtPass")
+        use=authenticate(request,txtUser=usuario,txtPass=password)
+        if use is not None and use.is_active:
+            if use.is_staff:
+                auth_login(request,use)
+                arreglo={'nombre':usuario,'contraseña':password, 'tipo':'administrador'}
+                return render(request,'core/index.html',arreglo)
+            else:
+                arreglo={'nombre':usuario,'contraseña':password, 'tipo':'cliente'}
+                return render(request,'core/registro.html',arreglo)
+        variables={
+            'msg':'No Existe Usuario Registrado con ese Nombre'
+        }
+        return remder(request,'core/login.html',variables)          
+
 @login_required(login_url='/login/')
 def agregar_carrito(request,id):
     #recuperar la lista del carrito desde la sesion
