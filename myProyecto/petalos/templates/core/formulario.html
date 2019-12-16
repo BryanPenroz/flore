@@ -58,7 +58,12 @@
             </div>
         </div>
     </div>
-   
 
-    <div id="respuesta">{{msg}}</div>
+   
+    <center>
+        {% if msge%}
+            <div class="alert alert-success" role="alert" id="respuesta">{{msge}}</div>
+        {% endif%}
+    </center>
+    
 {% endblock contenido %}

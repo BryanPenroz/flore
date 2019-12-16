@@ -39,9 +39,15 @@ def login_acceso(request):
         password=request.POST.get("txtPass")
         #creamos un modelo de usuario para autentificar
         us = authenticate(request,username=usuario,password=password)
+        msg=''
+        request.session["carrito"] = []        
+        request.session["carritox"] = []
+        print('realizado') 
         if us is not None and us.is_active:
             auth_login(request,us)
             return render(request,"core/index.html")
+        else:
+            return render(request,'core/login.html')
     return render(request,"core/login.html",{'msg':'Usuario u Contraseña Incorrecta "Intente Otra Vez u Comuniquese con Servicio Tecnico"'})
 
 @login_required(login_url='/login/')
@@ -72,7 +78,7 @@ def formulario(request):
                 categoria=obj_categoria
             )
             flor.save()
-            return render(request,'core/formulario.html',{'listacategoria':categorias,'msg':'grabo'})
+            return render(request,'core/formulario.html',{'listacategoria':categorias,'msge':'Se ha agregado una Flor satisfactoriamente'})
         if accion=='eliminar':
             titulo=request.POST.get("txtTitulo")#recupera el titulo
             flor=Flores.objects.get(name=titulo)# lo busca entre las flores
@@ -124,7 +130,7 @@ def grabar_carro(request):
 def carro_compras(request,id):
     f=Flores.objects.get(name=id)
     x=request.session["carritox"]
-    el=elemento(1,f.name,f.precio,1)
+    el=elemento(f.name,f.precio,1)
     sw=0
     suma=0
     clon=[]
@@ -133,7 +139,7 @@ def carro_compras(request,id):
         if item["nombre"]==f.name:
             sw=1
             cantidad=int(cantidad)+1
-        ne=elemento(1,item["nombre"],item["precio"],cantidad)
+        ne=elemento(item["nombre"],item["precio"],cantidad)
         suma=suma+int(ne.total())
         clon.append(ne.toString())
     if sw==0:
@@ -141,7 +147,7 @@ def carro_compras(request,id):
     x=clon    
     request.session["carritox"]=x
     flor=Flores.objects.all()    
-    return render(request,'core/galeria.html',{'Flores':flor,'total':suma})
+    return render(request,'core/carrito.html',{'Flores':flor,'total':suma})
 
 
 def carro_compras_mas(request,id):
@@ -151,9 +157,9 @@ def carro_compras_mas(request,id):
     clon=[]
     for item in x:        
         cantidad=item["cantidad"]
-        if item["nombre"]==p.name:
+        if item["nombre"]==f.name:
             cantidad=int(cantidad)+1
-        ne=elemento(1,item["nombre"],item["precio"],cantidad)
+        ne=elemento(item["nombre"],item["precio"],cantidad)
         suma=suma+int(ne.total())
         clon.append(ne.toString())
     x=clon    
@@ -169,9 +175,9 @@ def carro_compras_menos(request,id):
     suma=0
     for item in x:        
         cantidad=item["cantidad"]
-        if item["nombre"]==p.name:
+        if item["nombre"]==F.name:
             cantidad=int(cantidad)-1
-        ne=elemento(1,item["nombre"],item["precio"],cantidad)
+        ne=elemento(item["nombre"],item["precio"],cantidad)
         suma=suma+int(ne.total)
         clon.append(ne.toString())
     x=clon    
