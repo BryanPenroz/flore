@@ -32,3 +32,37 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
+/ codigo para notificaciones push
+
+
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
+
+var firebaseConfig = {
+                apiKey: "AIzaSyAWuELTCOiWJbzeX14VEkYH8PRlXp1GQB0",
+                authDomain: "floreria-c1504.firebaseapp.com",
+                databaseURL: "https://floreria-c1504.firebaseio.com",
+                projectId: "floreria-c1504",
+                storageBucket: "floreria-c1504.appspot.com",
+                messagingSenderId: "454939692114",
+                appId: "1:454939692114:web:e1e8dad7cb612c4ee6638b"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            let messaging = firebase.messaging();
+
+messaging.setBackgroundMessageHandler(function(payload){
+
+	let title = 'titulo de la notificacion';
+	
+	let options = {
+		 body:'Este es el mensaje',
+                 icon: '/static/img/logofb.png'
+
+	}
+
+	self.registration.showNotification(title, options);
+
+});
+
