@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'petalos.apps.PetalosConfig',
     'social_django',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

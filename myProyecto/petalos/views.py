@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from .models import Categoria,Flores
-from django.contrib.auth.decorators import login_required
-#incluimos el sistema de autentificacion de Django,
-#le di un alias a 'login'
+from .forms import CustomUserForm
+from django.contrib.auth.decorators import login_required,permission_required
 from django.contrib.auth import authenticate,logout, login as auth_login
-from django.contrib.auth import login,authenticate
+
 # Create your views here.
 
 #create views
@@ -35,7 +34,6 @@ def eliminar_flores(request,id):
         msg='No se pudo eliminar'
     flor=Flores.objects.all()# selecciono todo
     return render(request,"core/galeria.html",{'lista':flor,'msg':msg})
-
 
 def login(request):
     return render(request,"core/login.html")
@@ -92,91 +90,19 @@ def formulario(request):
         return render(request,'core/formulario.html',{'listacategoria':categorias})
     return render(request,'core/formulario.html',{'listacategoria':categorias})
 
+def registro_usuario(request):
+    data = {
+        'form':CustomUserForm()
+    }
+    if request.method == 'POST':
+        formulario= CustomUserForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            #autenticar al usuario y redirigirlo al inicio
+            username = formulario.cleaned_data['username']
+            password = formulario.cleaned_data['password1']
+            user = authenticate(username=username,password=password)
+            login(request,user)
+            return redirect(to='home')
+    return render(request,'core/registrar.html',data)
 
-
-@login_required
-def add_to_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
-    order_item, created = OrderItem.objects.get_or_create(
-        item=item,
-        user=request.user,
-        ordered=False
-    )
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item.quantity += 1
-            order_item.save()
-            messages.info(request, "This item quantity was updated.")
-            return redirect("core:order-summary")
-        else:
-            order.items.add(order_item)
-            messages.info(request, "This item was added to your cart.")
-            return redirect("core:order-summary")
-    else:
-        ordered_date = timezone.now()
-        order = Order.objects.create(
-            user=request.user, ordered_date=ordered_date)
-        order.items.add(order_item)
-        messages.info(request, "This item was added to your cart.")
-        return redirect("core:order-summary")
-
-
-@login_required
-def remove_from_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            order.items.remove(order_item)
-            messages.info(request, "This item was removed from your cart.")
-            return redirect("core:order-summary")
-        else:
-            messages.info(request, "This item was not in your cart")
-            return redirect("core:product", slug=slug)
-    else:
-        messages.info(request, "You do not have an active order")
-        return redirect("core:product", slug=slug)
-
-
-@login_required
-def remove_single_item_from_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            if order_item.quantity > 1:
-                order_item.quantity -= 1
-                order_item.save()
-            else:
-                order.items.remove(order_item)
-            messages.info(request, "This item quantity was updated.")
-            return redirect("core:order-summary")
-        else:
-            messages.info(request, "This item was not in your cart")
-            return redirect("core:product", slug=slug)
-    else:
-        messages.info(request, "You do not have an active order")
-        return redirect("core:product", slug=slug)
