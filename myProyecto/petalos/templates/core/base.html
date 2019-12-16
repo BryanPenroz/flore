@@ -1,78 +1,77 @@
+<!-- 
+REGISTROS DE CAMBIOS:
+
+Se arreglo distribucion del codigo.
+Se modifico el NavBar(Diseño, color de findo, color de letras a blancas, se añadio "zona de mi perfil", se ajusto muestra de contenido cuando se esta logeado)
+
+Lo demas se dejo tal cual estaba.
+
+-->
+
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
+    {% load static %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
-    
-
-    <title>
-        {% block titulo %}
+        <title>
+            {% block titulo %}
         
-        {% endblock titulo %}
-    </title>
+            {% endblock titulo %}
+        </title>
 
-    <script src="{% static 'static/js/jquery.js' %}"></script>
-    <script src="{% static 'static/js/popper.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-
-
-</head>
-
-
-
-<body>
-    <header>
-       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Pétalos</a>
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    </head>
+    <body>
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #c74088;">
+            <a class="navbar-brand" href="{% url 'IND' %}">
+                <img src="{% static 'img/ico-nav.PNG' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+                Pétalos
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'IND' %}">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'IND' %}" style="color:white;">Inicio <span class="sr-only">(current)</span></a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'GAL' %}">Galeria de flores</a>
+                        <a class="nav-link" href="{% url 'GAL' %}" style="color:white;">Galeria de flores</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'FORMU' %}">Formulario</a>
+                        <a class="nav-link" href="{% url 'FORMU' %}" style="color:white;">Formulario</a>
                     </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'CERRARSESION' %}">Logout</a>
-                    </li>
-
-                    
                 </ul>
-                <ul class="nav justify-content-end"
-                        <li class="nav-item"> 
+
+                <!--  INICIO ZONA MI PERFIL (ZONA SUPERIOR DERECHA) -->
+                {% if user.username %}
+                <ul class="navbar-nav navbar-text">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white;"> Mi cuenta </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
                             {% if user.username %}
-                            <b>Bienvenido Cliente : {{ user.username }}</b>
+                            <a class="dropdown-item">Bienvenido: {{ user.username }}</a>
                             {% endif %}
-                        </li>
+                            {% if user.username %}
+                            <a class="dropdown-item" href="{% url 'CERRARSESION' %}">Salir</a>
+                            {% endif %}
+                        </div>
+                    </li>
                 </ul>
-
+                {% endif %}
+                <!--  FIN ZONA MI PERFIL (ZONA SUPERIOR DERECHA) -->
             </div>
-
-            
-            
         </nav>
+        <section>
+            {% block contenido %}
 
-
-    </header>
-    <section>
-        {% block contenido %}
-
-        {% endblock contenido %}
-    </section>
-</body>
-
+            {% endblock contenido %}
+        </section>
+    </body>
 </html>
