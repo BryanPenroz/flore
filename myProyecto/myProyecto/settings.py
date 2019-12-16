@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'petalos.apps.PetalosConfig',
     'social_django',
+    'pwa',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,5 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL='/'
 #CLAVES DE LA APLICACION FACEBOOK
 SOCIAL_AUTH_FACEBOOK_KEY='730542487452034'
 SOCIAL_AUTH_FACEBOOK_SECRET='c2197e0ef5812354d81dd8e3c58dfaf6'
+
+PWA_SERVICE_WORKER = os.path.join(BASE_DIR,'serviceworker.js')
