@@ -102,7 +102,6 @@ def registro_usuario(request):
             username = formulario.cleaned_data['username']
             password = formulario.cleaned_data['password1']
             user = authenticate(username=username,password=password)
-            login(request,user)
+            login/(request,user)
             return redirect(to='home')
     return render(request,'core/registrar.html',data)
-
