@@ -17,3 +17,14 @@ class Flores(models.Model):
 
     def __str__(self):
         return self.name
+
+class Ticket(models.Model):
+    usuario=models.CharField(max_length=100)
+    titulo=models.CharField(max_length=100)
+    precio=models.IntegerField()
+    cantidad=models.IntegerField()
+    total=models.IntegerField()
+    fecha=models.DateField()
+
+    def __str__(self):
+        return str(self.usuario)+' '+str(self.titulo)
