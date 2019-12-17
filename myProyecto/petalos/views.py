@@ -9,10 +9,39 @@ import datetime;
 from .clases import elemento
 # Create your views here.
 
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse,HttpResponseBadRequest
+from django.core import serializers
+import json
+from fcm_django.models import FCMDevice
+
 #create views
+@csrf_exempt
+@require_http_methods(['POST'])
+def guardar_token(request):
+    body = request.body.decode('utf-8')
+    bodyDict = json.loads(body)
 
+    token = bodyDict['token']
 
+    existe  = FCMDevice.objects.filter(registration_id = token, active=true)
 
+    if len(existe) >0:
+        return HttpResponseBadRequest(json.dumps({'mensaje':'el token ya existe'}))
+
+    dispositivo = FCMDevice()
+    dispositivo.registration_id = token
+    dispositivo.active = true
+
+    #solo si el usuario  esta autenticando se enlazara
+
+    if request.user.is_authenticated:
+        dispositivo.user = request.user
+
+    try:
+        dispositivo.save()
+        return HttpResponse(json.dumps({'mensaje':'el token no se ha podido guardar'}))
 
 def eliminar_flores(request,id):
     flor=Flores.objects.get(name=id)#buscar flor
@@ -78,6 +107,17 @@ def formulario(request):
                 categoria=obj_categoria
             )
             flor.save()
+
+            dispositivos = FCMDevice.objects.filter(active=true)
+            dispositivos.send_message(
+                title="Flor agregada correctamente!!!!",
+                body="Se ha agregado: "+formulario.cleaned_data['nombre'],
+                icon= "/static/img/logofb.png"
+
+
+            )
+
+
             return render(request,'core/formulario.html',{'listacategoria':categorias,'msge':'Se ha agregado una Flor satisfactoriamente'})
         if accion=='eliminar':
             titulo=request.POST.get("txtTitulo")#recupera el titulo

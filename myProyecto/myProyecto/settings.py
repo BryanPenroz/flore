@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'petalos.apps.PetalosConfig',
     'social_django',
+    'fcm_django',
     'pwa',
+
 ]
 
 MIDDLEWARE = [
@@ -144,3 +146,17 @@ SOCIAL_AUTH_FACEBOOK_KEY='730542487452034'
 SOCIAL_AUTH_FACEBOOK_SECRET='c2197e0ef5812354d81dd8e3c58dfaf6'
 
 PWA_SERVICE_WORKER = os.path.join(BASE_DIR,'serviceworker.js')
+
+FCM_DJANGO_SETTINGS = {
+    "APP_VERBOSE_NAME": "Floreria",
+     # default: _('FCM Django')
+    "FCM_SERVER_KEY": "AIzaSyAWuELTCOiWJbzeX14VEkYH8PRlXp1GQB0",
+     # true if you want to have only one active device per registered user at a time
+     # default: False
+    "ONE_DEVICE_PER_USER": False,
+    # devices to which notifications cannot be sent,
+    # are deleted upon receiving error response from FCM
+    # default: False
+    "DELETE_INACTIVE_DEVICES": True,
+}
+

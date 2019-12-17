@@ -32,7 +32,7 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-/ codigo para notificaciones push
+//codigo para notificaciones push
 
 
 importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');

@@ -28,3 +28,4 @@ class Ticket(models.Model):
 
     def __str__(self):
         return str(self.usuario)+' '+str(self.titulo)
+

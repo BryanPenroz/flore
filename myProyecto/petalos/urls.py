@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import index,gale,formulario,login,login_acceso,cerrar_sesion,eliminar_flores,carro_compras,carros,carro_compras_mas,carro_compras_menos,grabar_carro
+from .views import index,gale,formulario,login,login_acceso,cerrar_sesion,eliminar_flores,carro_compras,carros,carro_compras_mas,carro_compras_menos,grabar_carro,guardar_token
 
 urlpatterns = [
     path('', index,name='IND'),
@@ -15,5 +15,8 @@ urlpatterns = [
     path('carro_mas/<id>/',carro_compras_mas,name='CARRO_MAS'),
     path('carro_menos/<id>/',carro_compras_menos,name='CARRO_MENOS'),
     path('grabar_carro/',grabar_carro,name='GRABAR_CARRO'),
+    path('guardar-token/',guardar_token, name='guardar_token'),
     path('',include('pwa.urls')),
+
 ]
+
