@@ -1,152 +1,174 @@
-{% extends "core/base.html" %}
+<!-- 
+REGISTROS DE CAMBIOS:
 
-{% block titulo %}
-Menu Principal - Petalos
-{% endblock titulo %}
+Se arreglo distribucion del codigo.
+Se modifico el NavBar(Diseño, color de findo, color de letras a blancas, se añadio "zona de mi perfil", se ajusto muestra de contenido cuando se esta logeado)
 
-{% load static %}
+Lo demas se dejo tal cual estaba.
 
-{% block contenido %}
+-->
 
-    <div class="card mb-3">
-        <img src="{% static 'img/indexpetalos.PNG' %}" width="100%" height="100%" class="card-img-top" alt="Responsive image">
-        <div class="dropdown-divider"></div>
-        <div class="card-body">
-            <center>
-                <h4 class="card-title">Regala cariño, regala sentimientos con Florería Pétalos.</h4>
-            </center>
-            <div class="container">
-                <div class="card-body">
-                    <p class="card-text">
-                    <h5>
-                        Somos una florería especializada en el reparto de flores a domicilio en Santiago con más de 10 años de experiencia.
-                        Realizamos envíos de todo tipo de flores como rosas, tulipanes,
-                        gerberas, lilium, girasoles, flores silvestres y mix florales.
-                        Contamos con diseños en floreros, ramos, cajas, canastos en mimbre y
-                        brindamos servicio dedecoración de iglesias y eventos.
-                        </h5>
-                    </p>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load pwa %}
+    {% progressive_web_app_meta %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+        <title>
+            {% block titulo %}
+        
+            {% endblock titulo %}
+        </title>
+
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+        <script>
+                // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyAWuELTCOiWJbzeX14VEkYH8PRlXp1GQB0",
+                authDomain: "floreria-c1504.firebaseapp.com",
+                databaseURL: "https://floreria-c1504.firebaseio.com",
+                projectId: "floreria-c1504",
+                storageBucket: "floreria-c1504.appspot.com",
+                messagingSenderId: "454939692114",
+                appId: "1:454939692114:web:e1e8dad7cb612c4ee6638b"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            let messaging = firebase.messaging();
+
+            //primero tenemos que enlazar service worker
+
+            navigator.serviceWorker
+            .register('./serviceworker.js')
+            .then(function(register){
+
+                messaging.userServiceWorker(register);
+
+                //solicitamos los permisos para recibir notificaciones
+                messaging.requestPermission()
+                .then(function(){
+                    console.log("El usuario ha aceptado Recibir Notificaciones")
+
+                    return messaging.getToken();
+
+                })
+                .then(function(token){
+                    console.log(token);
+
+                    //enviaremos el token  hacia django para guardarlo en la base de datos
+
+                    fetch('/guardar-token/',{
+                        method:'post',
+                        headers:{
+                            'Content-Type'='application/json',
+                            'Accept':'application/json'
+                        },
+                        body:JSON.stringify({
+                            'token':token
+                        })
+                    })
+                    .then(function(resultado){
+                        console.log("se ha guardado el token")
+                    })
+                    .catch(function(e){
+                        console.log("no se ha podido guardar el token")
+                    })
+
+                })
+                .catch(function(e){
+                console.log("El usuario no ha aceptado")
+                })  
+            })
+
+            //programamos las notificaciones push
+
+            messaging.onMessage(function(payload){
+                console.log("se ha recibido la notificacion")
+
+                let data = payload;
+                console.log(data);
+                
+                let title = payload.notification.title;
+
+                let options = {
+                    body: payload.notification.body,
+                    icon: payload.notification.icon
+                }
+
+                let mensaje = new Notification(title,options);    
+
+            });
+
+
+
+
+        </script>
+    </head>
+    <body>
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #c74088;">
+            <a class="navbar-brand" href="{% url 'IND' %}">
+                <img src="{% static 'img/ico-nav.PNG' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+                Pétalos
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'IND' %}" style="color:white;">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'GAL' %}" style="color:white;">Galeria de flores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'FORMU' %}" style="color:white;">Formulario</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'CARRITO' %}" style="color:white;">Carrito</a>
+                    </li>
+                </ul>
+
+                <!--  INICIO ZONA MI PERFIL (ZONA SUPERIOR DERECHA) -->
+                {% if user.username %}
+                <ul class="navbar-nav navbar-text">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white;"> Mi cuenta </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                            {% if user.username %}
+                            <a class="dropdown-item">Bienvenido: {{ user.username }}</a>
+                            {% endif %}
+                            {% if user.username %}
+                            <a class="dropdown-item" href="{% url 'CERRARSESION' %}">Salir</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                </ul>
+                {% endif %}
+                <!--  FIN ZONA MI PERFIL (ZONA SUPERIOR DERECHA) -->
             </div>
-        </div>
-    </div>
+        </nav>
+        <section>
+            {% block contenido %}
 
-
-    <div class="page-title-inner container align-center text-center flex-row-col medium-flex-wrap">
-        <div class="title-wrapper is-smaller flex-col">
-            <h1 class="entry-title mb-0"> PRODUCTOS DESTACADOS </h1>
-        </div>
-        <div class="title-content flex-col"></div>
-    </div>
-
-    <!-- DIVISOR DE SECCION-->
-    <div class="dropdown-divider"></div>
-    <!-- FIN DIVISOR DE SECCION-->
-    <div class="card-body">
-    </div>
-    <section>
-        <div class="container">
-            <div class="card-deck" style="text-align:center;">
-                <div class="card" style="max-width: 19rem;">
-                    <img src="{% static 'img/fotoindex2.jpg' %}" class="card-img-top img-thumbnail" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Florero de Rosas y Gypsuphylia</h5>
-                        <p class="card-text"><font size="2">Desde</font> $20.000</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                    </div>
-                </div>
-                <div class="card" style="max-width: 19rem;">
-                    <img src="{% static 'img/fotoindex1.jpg' %}" class="card-img-top img-thumbnail" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Florero de Rosas y Gerberas</h5>
-                        <p class="card-text"><font size="2">Desde</font> $33.500</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                    </div>
-                </div>
-                <div class="card" style="max-width: 19rem;">
-                    <img src="{% static 'img/fotoindex3.jpg' %}" class="card-img-top img-thumbnail" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Ramo de 10 Tulipanes</h5>
-                        <p class="card-text"><font size="2">Desde</font> $20.000</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                    </div>
-                </div>
-                <div class="card" style="max-width: 19rem; text-align:center;">
-                    <img src="{% static 'img/fotoindex4.png' %}" class="card-img-top img-thumbnail" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Florero de Tulipanes + Chocolate</h5>
-                        <p class="card-text"><font size="2">Desde</font> $29.490</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="card-body">
-    </div><div class="card-body">
-    </div>
-    <!-- DIVISOR DE SECCION-->
-    <div class="dropdown-divider"></div>
-    <!-- FIN DIVISOR DE SECCION-->
-    <div class="card-body">
-    </div>
-    <div class="card-body">
-    </div>
-    <section>
-        <footer class="footer mt-auto py-3" style="background-color: black;">
-            <div class="container">
-                <div class="row" style="color:white;">
-                    <div class="col-6 col-md">
-                        <h5>Información de contacto</h5>
-                        <ul class="">
-                            <li>Teléfono: <a class="text-muted" href="#">229827480</a></li>
-                            <li>Celular: <a class="text-muted" href="#">+569 77051323</a></li>
-                            <li> Email: <a class="text-muted" href="#">contacto@floreriapetalos.cl</a></li>
-                        </ul>
-                        <h5>COBERTURA Y VALORES DESPACHOS</h5>
-                        <ul class="">
-                            <li>Revisa los valores y cobertura <a class="text-muted" href="#">AQUÍ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-md">
-                        <h5>Cómo Comprar</h5>
-                        <ul class="">
-                            <li>
-                                1era Opción
-                                Llamar a nuestros teléfonos <a class="text-muted" href="#">+569 77051323</a> o <a class="text-muted" href="#">229827580</a> para tomar nota de su pedido. Pago vía
-                                transferencia electrónica o depósito a nuestra cuenta.
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-md">
-                        <h5>Condiciones de compra:</h5>
-                        <div></div>
-                        <h5>Nuestro horarios de entrega son</h5>
-                        <ul class="">
-                            <li>
-                                Lunes a Viernes de 9:00-19:00 hrs y Sáb entre las 10:00 y 17:00
-                                hrs.
-                                (Fuera del rango horario, existe un recargo de $5000)
-                                Domingos y festivos horario de entrega es entre las 10:00 y las 14:00 hrs con un costo
-                                adicional
-                                de $5000 (Solo se entregarán pedidos programados y cancelados con al menos con 48 hrs de
-                                anticipación)
-                                Para otro requerimiento contáctanos a nuestros teléfonos o
-                                whatsapp <a class="text-muted" href="#">229827480</a> / <a class="text-muted" href="#">+56977051323</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </section>
-
-    {% endblock contenido %}
+            {% endblock contenido %}
+        </section>
+    </body>
+</html>

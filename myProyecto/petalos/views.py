@@ -81,7 +81,7 @@ def formulario(request):
             )
             flor.save()
 
-            dispositivos = FCMDevice.objects.filter(active=true)
+            dispositivos = FCMDevice.objects.filter(active=True)
             dispositivos.send_message(
                 title="Flor agregada correctamente!!!!",
                 body="Se ha agregado: "+formulario.cleaned_data['nombre'],
@@ -145,7 +145,7 @@ def guardar_token(request):
 
     token = bodyDict['token']
 
-    existe  = FCMDevice.objects.filter(registration_id = token, active=true)
+    existe  = FCMDevice.objects.filter(registration_id = token, active=True)
 
     if len(existe) >0:
         return HttpResponseBadRequest(json.dumps({'mensaje':'el token ya existe'}))
