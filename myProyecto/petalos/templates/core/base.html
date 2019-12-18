@@ -74,7 +74,7 @@ Lo demas se dejo tal cual estaba.
 
                     //enviaremos el token  hacia django para guardarlo en la base de datos
 
-                    fetch('/guardar-token/',{
+                    fetch('guardar-token/',{
                         method:'post',
                         headers:{
                             'Content-Type'='application/json',
@@ -105,12 +105,13 @@ Lo demas se dejo tal cual estaba.
                 let data = payload;
                 console.log(data);
                 
-                let title = payload.notification.title;
+              let title = 'titulo de la notificacion';
+	
+	            let options = {
+		            body:'Este es el mensaje',
+                    icon: "/static/img/carritologo.png"
 
-                let options = {
-                    body: payload.notification.body,
-                    icon: payload.notification.icon
-                }
+	            }
 
                 let mensaje = new Notification(title,options);    
 

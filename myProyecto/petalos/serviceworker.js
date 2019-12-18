@@ -58,7 +58,7 @@ messaging.setBackgroundMessageHandler(function(payload){
 	
 	let options = {
 		 body:'Este es el mensaje',
-                 icon: '/static/img/logofb.png'
+         icon: '/static/img/logofb.png'
 
 	}
 

@@ -7,14 +7,44 @@ from django.contrib.auth import authenticate,logout, login as auth_login
 from django.contrib.auth import login,authenticate
 import datetime;
 from .clases import elemento
+
+#notificacion push
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse,HttpResponseBadRequest
+
+from django.http import HttpResponse, HttpResponseBadRequest
+
 from django.core import serializers
 import json
+
 from fcm_django.models import FCMDevice
 # Create your views here.
 
+@require_http_methods(['POST'])
+def guardar_token(request):
+    body = request.body.decode('utf-8')
+    bodyDict = json.loads(body)
+
+    token = bodyDict['token']
+
+    existe  = FCMDevice.objects.filter(registration_id = token, active=True)
+
+    if len(existe) > 0:
+        return HttpResponseBadRequest(json.dumps({'mensaje':'el token ya existe'}))
+
+    dispositivo = FCMDevice()
+    dispositivo.registration_id = token
+    dispositivo.active = True
+
+    #solo si el usuario  esta autenticando se enlazara
+
+    if request.user.is_authenticated:
+        dispositivo.user = request.user
+    try:
+        dispositivo.save()
+        return HttpResponse(json.dumps({'mensaje':'el token guardado'}))
+    except:
+        return HttpResponseBadRequest(json.dumps({'mensaje':'no se ha podido guardar'}))    
 
 def eliminar_flores(request,id):
     flor=Flores.objects.get(name=id)#buscar flor
@@ -81,14 +111,7 @@ def formulario(request):
             )
             flor.save()
 
-            dispositivos = FCMDevice.objects.filter(active=True)
-            dispositivos.send_message(
-                title="Flor agregada correctamente!!!!",
-                body="Se ha agregado: "+formulario.cleaned_data['nombre'],
-                icon= "/static/img/logofb.png"
-
-
-            )
+          
 
 
             return render(request,'core/formulario.html',{'listacategoria':categorias,'msge':'Se ha agregado una Flor satisfactoriamente'})
@@ -129,40 +152,17 @@ def grabar_carro(request):
                 fecha=datetime.date.today()
             )
             ticket.save()
+            
             suma=suma+int(total)  
             print("reg grabado")                 
         mensaje="Grabado"
+
         request.session["carritox"] = []
     except:
         mensaje="error al grabar"            
     return render(request,'core/carrito.html',{'x':x,'total':suma,'mensaje':mensaje})
 
-@csrf_exempt
-@require_http_methods(['POST'])
-def guardar_token(request):
-    body = request.body.decode('utf-8')
-    bodyDict = json.loads(body)
 
-    token = bodyDict['token']
-
-    existe  = FCMDevice.objects.filter(registration_id = token, active=True)
-
-    if len(existe) >0:
-        return HttpResponseBadRequest(json.dumps({'mensaje':'el token ya existe'}))
-
-    dispositivo = FCMDevice()
-    dispositivo.registration_id = token
-    dispositivo.active = True
-
-    #solo si el usuario  esta autenticando se enlazara
-
-    if request.user.is_authenticated:
-        dispositivo.user = request.user
-    try:
-        dispositivo.save()
-        return HttpResponse(json.dumps({'mensaje':'el token guardado'}))
-    except:
-        return HttpResponseBadRequest(json.dumps({'mensaje':'no se ha podido guardar'}))    
 
 
 def carro_compras(request,id):
